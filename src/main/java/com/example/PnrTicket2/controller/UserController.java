@@ -38,5 +38,9 @@ public class UserController {
                            @RequestBody UserSaveDto dto){
         return userService.updateUserById(id, dto);
     }
+    @PutMapping("/newpassword/{name}")
+    String newPassword(@PathVariable String name){
+        return userService.passwordUpdate(name);
+    }
 
 }

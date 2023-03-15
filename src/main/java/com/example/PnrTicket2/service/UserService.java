@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
     UserRepository userRepository;
+    DefaultEmailService defaultEmailService;
 
 
     public UserSaveDto getUserById(Long id){
@@ -79,5 +81,30 @@ public class UserService {
         dto = userToDto(user);
         return dto;
 
+    }
+
+    public String passwordUpdate(String name){
+        User user = userRepository.findByName(name);
+        user.setPassword(passwordCode());
+        user = userRepository.save(user);
+        String email = user.getEmail();
+        String newPassword = user.getPassword();
+        String message = "This is your new password.";
+        defaultEmailService.sendSimpleEmail(email,message,newPassword);
+
+        return "New password sended to user with name: "+name;
+
+    }
+    private String passwordCode() {
+        int length = 8;
+        Random r = new Random();
+        String s = r.ints(48, 122)
+                .filter(i -> (i < 57 || i > 65) && (i < 90 || i > 97))
+                .mapToObj(i -> (char) i)
+                .limit(length)
+                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                .toString();
+
+        return s;
     }
 }
