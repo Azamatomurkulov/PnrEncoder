@@ -6,6 +6,9 @@ import com.example.PnrTicket2.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PnrTicketService {
@@ -123,5 +126,15 @@ public class PnrTicketService {
         aviaCompany.setFlightNumber(pnr.getAviaCompany().getFlightNumber());
         pnr.setAviaCompany(aviaCompany);
         return pnr;
+    }
+
+    public List<String> PnrEncoderForModer(String pnr){
+        String[] pnrString = pnr.split("\r?\n|\r");
+        List<String> list = new ArrayList<>();
+        for(int i =0;i< pnrString.length;i++){
+            String str  = PnrEncode(pnrString[i]);
+            list.add(str);
+        }return list;
+
     }
 }
