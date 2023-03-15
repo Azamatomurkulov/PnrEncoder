@@ -1,0 +1,1 @@
+DELETE FROM arrival_city WHERE id=1

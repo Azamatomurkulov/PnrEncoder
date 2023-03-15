@@ -74,7 +74,7 @@ public class PnrTicketService {
                 pnrTicket2.getDateOfDeparture().getDate()+" "+
                 pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
                 pnrTicket2.getDepartureCity().getCity()+" "+
-                pnrTicket2.getArrivalCity().getCity()+" "+
+                pnrTicket2.getArrivalCity().getAirport()+" "+
                 pnrTicket2.getTerminal()+" " +
                 pnrTicket2.getDepartureTime()+" "+
                 pnrTicket2.getArrivalTime()+" "+

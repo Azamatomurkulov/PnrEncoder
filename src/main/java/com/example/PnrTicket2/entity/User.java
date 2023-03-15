@@ -13,11 +13,13 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArrivalCity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String iataCode;
-    private String airport;
-    private String country;
+    Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String matchingPassword;
 }
