@@ -1,5 +1,6 @@
 package com.example.PnrTicket2.controller;
 
+import com.example.PnrTicket2.dto.UserSaveDto;
 import com.example.PnrTicket2.entity.User;
 import com.example.PnrTicket2.service.UserService;
 import lombok.AllArgsConstructor;
@@ -11,25 +12,31 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
     UserService userService;
 
-    @GetMapping("/user/{id}")
-    User getById(@PathVariable Long id){
+    @GetMapping("/{id}")
+    UserSaveDto getById(@PathVariable Long id){
         return userService.getUserById(id);
     }
-    @GetMapping("/user/all")
-    List<User> getAllUsers(){
+    @GetMapping("/all")
+    List<UserSaveDto> getAllUsers(){
         return userService.getAllUsers();
     }
-    @PostMapping("/user/newuser")
-    User addNewUser(@RequestBody User user){
-        return userService.addNewUser(user);
+    @PostMapping("/newuser")
+    UserSaveDto addNewUser(@RequestBody UserSaveDto dto){
+        return userService.addNewUser(dto);
     }
-    @PutMapping("/user/delete/{id}")
+    @PutMapping("/delete/{id}")
     LocalDate deleteUser(@PathVariable Long id){
         return userService.deleteUserById(id);
+    }
+    @PutMapping("/update/{id}")
+    UserSaveDto updateUser(@PathVariable Long id,
+                           @RequestBody UserSaveDto dto){
+        return userService.updateUserById(id, dto);
     }
 
 }

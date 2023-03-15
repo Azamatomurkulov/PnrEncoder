@@ -54,10 +54,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http    .csrf().disable()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.GET,"/pnr/*","/user/*").hasAuthority(Permission.ADMIN_READ.getPermission())
-                .antMatchers(HttpMethod.POST,"/pnr/*","/user/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.GET,"/pnr/*","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers(HttpMethod.POST,"/pnr/*","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*","/arrivalcity/delete/*","/departurecity/delete/*","/aviacompany/delete/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
+                .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*","/user/update/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
                 .anyRequest().authenticated()
 
                 .and().httpBasic();

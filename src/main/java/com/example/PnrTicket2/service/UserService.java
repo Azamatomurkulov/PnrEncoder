@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,14 +17,27 @@ public class UserService {
     UserRepository userRepository;
 
 
-    public User getUserById(Long id){
-        return userRepository.findByIdAndRdtIsNull(id);
+    public UserSaveDto getUserById(Long id){
+        User user = userRepository.findByIdAndRdtIsNull(id);
+        return userToDto(user);
     }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserSaveDto> getAllUsers(){
+        List<User> users = userRepository.findAll();
+        List<UserSaveDto> dtos = new ArrayList<>();
+        for(User user: users){
+            dtos.add(userToDto(user));
+        }return dtos;
     }
-    public User addNewUser(User user){
-        return userRepository.save(user);
+    public UserSaveDto addNewUser(UserSaveDto dto){
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole());
+
+        user = userRepository.save(user);
+        dto.setId(user.getId());
+        return dto;
     }
 
     public UserSaveDto userToDto(User user){
@@ -41,6 +55,29 @@ public class UserService {
         user.setRdt(LocalDate.now());
         userRepository.save(user);
         return user.getRdt();
+
+    }
+    public UserSaveDto updateUserById(Long id,UserSaveDto dto){
+        User user = userRepository.findById(id).get();
+        if(dto.getName()!=null){
+            user.setName(dto.getName());
+        }
+        if(dto.getEmail()!=null){
+            user.setEmail(dto.getEmail());
+        }
+        if(dto.getPassword()!=null){
+            user.setPassword(dto.getPassword());
+        }
+        if(dto.getRole()!=null){
+            user.setRole(dto.getRole());
+        }
+        if(dto.getRdt()!=null){
+            user.setRdt(dto.getRdt());
+        }
+        user = userRepository.save(user);
+        dto.setId(user.getId());
+        dto = userToDto(user);
+        return dto;
 
     }
 }
