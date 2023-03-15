@@ -5,6 +5,8 @@ import com.example.PnrTicket2.entity.User;
 import com.example.PnrTicket2.service.UserService;
 import lombok.AllArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,9 +20,14 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/{id}")
-    UserSaveDto getById(@PathVariable Long id){
-        return userService.getUserById(id);
+    ResponseEntity<UserSaveDto> getById(@PathVariable Long id) throws Exception {
+        try {return new ResponseEntity<>( userService.getUserById(id), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(null,
+                    HttpStatus.BAD_REQUEST);
+        }
     }
+
     @GetMapping("/all")
     List<UserSaveDto> getAllUsers(){
         return userService.getAllUsers();

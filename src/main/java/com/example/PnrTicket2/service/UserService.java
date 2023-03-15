@@ -19,12 +19,12 @@ public class UserService {
     DefaultEmailService defaultEmailService;
 
 
-    public UserSaveDto getUserById(Long id){
-        User user = userRepository.findByIdAndRdtIsNull(id);
+    public UserSaveDto getUserById(Long id) throws Exception {
+        User user = userRepository.findByIdAndRdtIsNull(id).orElseThrow(() -> new Exception("User not Found"));
         return userToDto(user);
     }
     public List<UserSaveDto> getAllUsers(){
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByRdtIsNull();
         List<UserSaveDto> dtos = new ArrayList<>();
         for(User user: users){
             dtos.add(userToDto(user));
