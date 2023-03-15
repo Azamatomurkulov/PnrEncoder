@@ -1,7 +1,10 @@
 package com.example.PnrTicket2.service;
 
+import com.example.PnrTicket2.dto.PnrDto;
 import com.example.PnrTicket2.entity.*;
 
+import com.example.PnrTicket2.exceptions.AviaCompanyException;
+import com.example.PnrTicket2.exceptions.CityException;
 import com.example.PnrTicket2.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,7 @@ public class PnrTicketService {
     DepartureCityRepository departureCityRepository;
     ArrivalCityRepository arrivalCityRepository;
     AviaCompanyRepository aviaCompanyRepository;
-    public String PnrEncode(String pnr){
+    public String pnrEncode(String pnr) throws Exception {
         String[] substring = pnr.trim().split("\\s+");
 
         AviaCompany aviaCompany = new AviaCompany();
@@ -66,13 +69,13 @@ public class PnrTicketService {
         pnrTicket.setDepartureTime(st.toString());
         pnrTicket.setArrivalTime(st2.toString());
 
-        PnrTicket pnrTicket2 = PnrDateEncoder(pnrTicket);
-        pnrTicket2 = PnrCityEncoder(pnrTicket2);
-        pnrTicket2 = PnrAviaCompanyEncoder(pnrTicket2);
-//        return pnrTicket;
-//        String number = pnrTicket2.getDateOfDeparture().getDateCode();
-//        number = number.substring(0,2)+" "+pnrTicket2.getDateOfDeparture().getDateEncode();
-//
+        PnrTicket pnrTicket2 = pnrDateEncoder(pnrTicket);
+        pnrTicket2 = pnrCityEncoder(pnrTicket2);
+
+        pnrTicket2 = pnrAviaCompanyEncoder(pnrTicket2);
+
+//        return pnrTicket2;
+
         return pnrTicket2.getAviaCompany().getAirlineName()+" "+
                 pnrTicket2.getDateOfDeparture().getDate()+" "+
                 pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
@@ -83,22 +86,8 @@ public class PnrTicketService {
                 pnrTicket2.getArrivalTime()+" "+
                 pnrTicket2.getAviaCompany().getFlightNumber();
     }
-//    public static void main(String[] args){
-//        PnrTicketService pnr = new PnrTicketService();
-//        PnrTicket pnr2 =  pnr.PnrEncode("AC8097 Y 15OCT 4 YVRSEA HK1         1335 1435   DH4 E 0");
-//
-//        String company = pnr2.getAviaCompany();
-//        company = company.substring(0,2);
-//        System.out.println(company);
-//
-//        String date = pnr2.getDateOfDeparture();
-//        date = date.substring(date.length()-3);
-//        System.out.println(date);
-//
-//    }
-    public PnrTicket PnrDateEncoder(PnrTicket pnr){
-//        DateOfDeparture dateOfDeparture2 = pnr.getDateOfDeparture();
-//        String date = dateOfDeparture2.getDateCode();
+
+    public PnrTicket pnrDateEncoder(PnrTicket pnr){
         String date = pnr.getDateOfDeparture().getDateCode();
 
         date = date.substring(date.length()-3);
@@ -109,32 +98,58 @@ public class PnrTicketService {
         return pnr;
     }
 
-    public PnrTicket PnrCityEncoder(PnrTicket pnr){
+    public PnrTicket pnrCityEncoder(PnrTicket pnr)throws CityException {
 
         String iataDeparture = pnr.getDepartureCity().getIataCode();
         String iataArrival = pnr.getArrivalCity().getIataCode();
-        DepartureCity departureCity = departureCityRepository.findByIataCode(iataDeparture);
-        ArrivalCity arrivalCity = arrivalCityRepository.findByIataCode(iataArrival);
+        DepartureCity departureCity;
+        ArrivalCity arrivalCity;
+
+        if(( departureCity = departureCityRepository.findByIataCode(iataDeparture))==null){
+            throw new CityException("Город не найден, убедитесь в правильности ввода.");
+        }
+        if(( arrivalCity = arrivalCityRepository.findByIataCode(iataArrival))==null){
+            throw new CityException("Город не найден, убедитесь в правильности ввода.");
+        }
 
         pnr.setDepartureCity(departureCity);
         pnr.setArrivalCity(arrivalCity);
         return pnr;
     }
 
-    public PnrTicket PnrAviaCompanyEncoder(PnrTicket pnr){
-        AviaCompany aviaCompany = aviaCompanyRepository.findByIataCode(pnr.getAviaCompany().getIataCode());
+    public PnrTicket pnrAviaCompanyEncoder(PnrTicket pnr)throws AviaCompanyException{
+        AviaCompany aviaCompany;
+        if( (aviaCompany = aviaCompanyRepository.findByIataCode(pnr.getAviaCompany().getIataCode()))==null){
+            throw new AviaCompanyException("Авиакомпания не найдена, убедитесь в праильности ввода.");
+        }
         aviaCompany.setFlightNumber(pnr.getAviaCompany().getFlightNumber());
         pnr.setAviaCompany(aviaCompany);
         return pnr;
     }
 
-    public List<String> PnrEncoderForModer(String pnr){
-        String[] pnrString = pnr.split("\r?\n|\r");
+    public List<String> pnrEncoderForModer(String pnr) throws Exception {
+        String[] pnrString = pnr.split("/");
         List<String> list = new ArrayList<>();
         for(int i =0;i< pnrString.length;i++){
-            String str  = PnrEncode(pnrString[i]);
+            String str  = pnrEncode(pnrString[i]);
             list.add(str);
         }return list;
 
+    }
+
+    private PnrDto entityToDto(PnrTicket pnr){
+        PnrDto dto = new PnrDto();
+        dto.setId(pnr.getId());
+        dto.setArrivalCity(pnr.getArrivalCity());
+        dto.setDepartureCity(pnr.getDepartureCity());
+        dto.setArrivalTime(pnr.getArrivalTime());
+        dto.setDepartureTime(pnr.getDepartureTime());
+        dto.setTerminal(pnr.getTerminal());
+        dto.setAviaCompany(pnr.getAviaCompany());
+        dto.setTypeOfTicket(pnr.getTypeOfTicket());
+        dto.setTypeOfAirPlane(pnr.getTypeOfAirPlane());
+        dto.setDayOfDeparture(pnr.getDayOfDeparture());
+        dto.setDateOfDeparture(pnr.getDateOfDeparture());
+        return dto;
     }
 }

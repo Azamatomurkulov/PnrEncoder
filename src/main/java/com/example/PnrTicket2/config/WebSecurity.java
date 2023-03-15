@@ -33,17 +33,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         super.configure(auth);
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("admin")
-//                .password("admin")
-//                .roles(Roles.ADMIN.name())
-//                .and()
-//                .withUser("user")
-//                .password("user")
-//                .roles(Roles.USER.name());
-//    }
-
     @Bean
     protected PasswordEncoder getPasswordEncoder(){
         return NoOpPasswordEncoder.getInstance();
@@ -54,14 +43,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http    .csrf().disable()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.GET,"/pnr/*","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*","/email/*").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers(HttpMethod.GET,"/pnr","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*","/email/*").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers("/user/passwordupdate").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers("/pnr/moder").hasAuthority(Permission.ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST,"/pnr/*","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*","/arrivalcity/delete/*","/departurecity/delete/*","/aviacompany/delete/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
                 .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*","/user/update/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
                 .anyRequest().authenticated()
 
                 .and().httpBasic();
-//                .and().formLogin();
     }
 
 

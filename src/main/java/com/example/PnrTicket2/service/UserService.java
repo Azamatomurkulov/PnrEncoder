@@ -24,7 +24,7 @@ public class UserService {
         return userToDto(user);
     }
     public List<UserSaveDto> getAllUsers(){
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByRdtIsNull();
         List<UserSaveDto> dtos = new ArrayList<>();
         for(User user: users){
             dtos.add(userToDto(user));
@@ -106,5 +106,12 @@ public class UserService {
                 .toString();
 
         return s;
+    }
+
+    public String passwordUpdateForUser(String name,String newPassword){
+        User user = userRepository.findByName(name);
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return "The password for: "+ name+" been updated.";
     }
 }
