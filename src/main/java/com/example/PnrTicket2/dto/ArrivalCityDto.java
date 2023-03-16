@@ -6,6 +6,6 @@ import lombok.Data;
 public class ArrivalCityDto {
     private Long id;
     private String iataCode;
-    private String city;
+    private String airport;
     private String country;
 }

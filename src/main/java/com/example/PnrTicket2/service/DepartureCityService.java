@@ -24,7 +24,7 @@ public class DepartureCityService {
     public DepartureCityDto entityToDto(DepartureCity city){
         DepartureCityDto dto = new DepartureCityDto();
         dto.setId(city.getId());
-        dto.setCity(city.getCity());
+        dto.setAirport(city.getAirport());
         dto.setCountry(city.getCountry());
         dto.setIataCode(city.getIataCode());
         return dto;
@@ -38,7 +38,7 @@ public class DepartureCityService {
     }
     public DepartureCityDto addNewDepartureCity(DepartureCityDto dto){
         DepartureCity city = new DepartureCity();
-        city.setCity(dto.getCity());
+        city.setAirport(dto.getAirport());
         city.setCountry(dto.getCountry());
         city.setIataCode(dto.getIataCode());
         city = departureCityRepository.save(city);

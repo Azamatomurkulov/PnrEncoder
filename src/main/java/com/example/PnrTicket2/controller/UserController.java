@@ -49,5 +49,10 @@ public class UserController {
     String newPassword(@PathVariable String name){
         return userService.passwordUpdate(name);
     }
+    @PutMapping("/passwordupdate")
+    String passwordUpdateForUser(@RequestParam String name,
+                                 @RequestParam String pw){
+        return userService.passwordUpdateForUser(name,pw);
+    }
 
 }

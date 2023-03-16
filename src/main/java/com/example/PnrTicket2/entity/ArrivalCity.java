@@ -18,6 +18,6 @@ public class ArrivalCity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String iataCode;
-    private String city;
+    private String airport;
     private String country;
 }

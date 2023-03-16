@@ -32,7 +32,7 @@ public class UserService {
     }
     public UserSaveDto addNewUser(UserSaveDto dto){
         User user = new User();
-        user.setName(dto.getName());
+        user.setLogin(dto.getLogin());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
@@ -45,7 +45,8 @@ public class UserService {
     public UserSaveDto userToDto(User user){
         UserSaveDto dto = new UserSaveDto();
         dto.setId(user.getId());
-        dto.setName(user.getName());
+        dto.setFullName(user.getFullName());
+        dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
         dto.setPassword(user.getPassword());
         dto.setRdt(user.getRdt());
@@ -61,8 +62,11 @@ public class UserService {
     }
     public UserSaveDto updateUserById(Long id,UserSaveDto dto){
         User user = userRepository.findById(id).get();
-        if(dto.getName()!=null){
-            user.setName(dto.getName());
+        if(dto.getLogin()!=null){
+            user.setLogin(dto.getLogin());
+        }
+        if(dto.getFullName()!=null){
+            user.setFullName(dto.getFullName());
         }
         if(dto.getEmail()!=null){
             user.setEmail(dto.getEmail());
@@ -84,7 +88,7 @@ public class UserService {
     }
 
     public String passwordUpdate(String name){
-        User user = userRepository.findByName(name);
+        User user = userRepository.findByLogin(name);
         user.setPassword(passwordCode());
         user = userRepository.save(user);
         String email = user.getEmail();
@@ -106,5 +110,12 @@ public class UserService {
                 .toString();
 
         return s;
+    }
+
+    public String passwordUpdateForUser(String name,String newPassword){
+        User user = userRepository.findByLogin(name);
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return "The password for: "+ name+" been updated.";
     }
 }

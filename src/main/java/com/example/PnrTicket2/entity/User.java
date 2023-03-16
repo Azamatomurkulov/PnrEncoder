@@ -13,7 +13,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String fullName;
+    private String login;
     private String password;
     private String email;
     @Enumerated(value = EnumType.STRING)

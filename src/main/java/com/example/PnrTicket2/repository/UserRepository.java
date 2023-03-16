@@ -6,14 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    @Query(value = "select * from users_table where name = ?", nativeQuery = true)
-    User findByName(String name);
+    @Query(value = "select * from users_table where login = ?", nativeQuery = true)
+    User findByLogin(String name);
 
-    Optional<User> findByIdAndRdtIsNull(Long id);
+    User findByIdAndRdtIsNull(Long id);
     List<User> findAllByRdtIsNull();
 }
