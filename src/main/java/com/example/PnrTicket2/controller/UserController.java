@@ -1,10 +1,9 @@
 package com.example.PnrTicket2.controller;
 
 import com.example.PnrTicket2.dto.UserSaveDto;
-import com.example.PnrTicket2.entity.User;
 import com.example.PnrTicket2.service.UserService;
 import lombok.AllArgsConstructor;
-import net.bytebuddy.asm.Advice;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -30,7 +29,7 @@ public class UserController {
         return userService.addNewUser(dto);
     }
     @PutMapping("/delete/{id}")
-    LocalDate deleteUser(@PathVariable Long id){
+    String deleteUser(@PathVariable Long id){
         return userService.deleteUserById(id);
     }
     @PutMapping("/update/{id}")

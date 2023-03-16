@@ -9,22 +9,60 @@ import com.example.PnrTicket2.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class PnrTicketService {
     PnrTicketRepository pnrTicketRepository;
     DateOfDepartureRepository dateOfDeparture;
-
-    DepartureCityRepository departureCityRepository;
-    ArrivalCityRepository arrivalCityRepository;
+    AirportRepository airportRepository;
     AviaCompanyRepository aviaCompanyRepository;
+
+    public PnrDto getPnrById(Long id){
+        PnrTicket pnr = pnrTicketRepository.findById(id).get();
+        return entityToDto(pnr);
+    }
+
+    public List<PnrDto> getAllPnrTickets(){
+        List<PnrTicket> pnrTickets = pnrTicketRepository.findAll();
+        List<PnrDto> dtos = new ArrayList<>();
+        for(PnrTicket pnr: pnrTickets){
+            dtos.add(entityToDto(pnr));
+        }
+        return dtos;
+    }
+    public PnrDto addNewPnr(PnrDto dto){
+        PnrTicket pnrTicket = new PnrTicket();
+
+        pnrTicket.setDepartureAirport(dto.getDepartureAirport());
+        pnrTicket.setArrivalAirport(dto.getArrivalAirport());
+        pnrTicket.setArrivalTime(dto.getArrivalTime());
+        pnrTicket.setDepartureTime(dto.getDepartureTime());
+        pnrTicket.setTerminal(dto.getTerminal());
+        pnrTicket.setAviaCompany(dto.getAviaCompany());
+        pnrTicket.setTypeOfTicket(dto.getTypeOfTicket());
+        pnrTicket.setTypeOfAirPlane(dto.getTypeOfAirPlane());
+        pnrTicket.setDayOfDeparture(dto.getDayOfDeparture());
+        pnrTicket.setDateOfDeparture(dto.getDateOfDeparture());
+
+         pnrTicketRepository.save(pnrTicket);
+         return entityToDto(pnrTicket);
+    }
+
+    public String deletePnrById(Long id){
+        pnrTicketRepository.deleteById(id);
+        return "Pnr with id: "+id+" been deleted.";
+    }
     public String pnrEncode(String pnr) throws Exception {
         String[] substring = pnr.trim().split("\\s+");
 
         AviaCompany aviaCompany = new AviaCompany();
+
+        PnrTicket pnrTicket = new PnrTicket();
 
         int n = 0;
         if(substring[0].length()<3){
@@ -54,17 +92,19 @@ public class PnrTicketService {
         dateOfDeparture.setDateCode(substring[2+n]);
         dateOfDeparture.setDate(substring[2+n].substring(0,2));
 
-        DepartureCity departureCity = new DepartureCity();
-        departureCity.setIataCode(cities[0]);
 
-        ArrivalCity arrivalCity = new ArrivalCity();
-        arrivalCity.setIataCode(cities[1]);
+        Airport departureAirport = new Airport();
+        departureAirport.setIataCode(cities[0]);
 
-        PnrTicket pnrTicket = new PnrTicket();
+        Airport arrivalAirport = new Airport();
+        arrivalAirport.setIataCode(cities[1]);
+
+
+
         pnrTicket.setAviaCompany(aviaCompany);
         pnrTicket.setDateOfDeparture(dateOfDeparture);
-        pnrTicket.setDepartureCity(departureCity);
-        pnrTicket.setArrivalCity(arrivalCity);
+        pnrTicket.setDepartureAirport(departureAirport);
+        pnrTicket.setArrivalAirport(arrivalAirport);
         pnrTicket.setTerminal(substring[5+n]);
         pnrTicket.setDepartureTime(st.toString());
         pnrTicket.setArrivalTime(st2.toString());
@@ -74,13 +114,17 @@ public class PnrTicketService {
 
         pnrTicket2 = pnrAviaCompanyEncoder(pnrTicket2);
 
-//        return pnrTicket2;
+        pnrTicketRepository.save(pnrTicket2);
+
+
+//        PnrDto dto = entityToDto(pnrTicket2);
+//        return dto;
 
         return pnrTicket2.getAviaCompany().getAirlineName()+" "+
                 pnrTicket2.getDateOfDeparture().getDate()+" "+
                 pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
-                pnrTicket2.getDepartureCity().getAirport()+" "+
-                pnrTicket2.getArrivalCity().getAirport()+" "+
+                pnrTicket2.getDepartureAirport().getAirport()+" "+
+                pnrTicket2.getArrivalAirport().getAirport()+" "+
                 pnrTicket2.getTerminal()+" " +
                 pnrTicket2.getDepartureTime()+" "+
                 pnrTicket2.getArrivalTime()+" "+
@@ -100,20 +144,20 @@ public class PnrTicketService {
 
     public PnrTicket pnrCityEncoder(PnrTicket pnr)throws CityException {
 
-        String iataDeparture = pnr.getDepartureCity().getIataCode();
-        String iataArrival = pnr.getArrivalCity().getIataCode();
-        DepartureCity departureCity;
-        ArrivalCity arrivalCity;
+        String iataDeparture = pnr.getDepartureAirport().getIataCode();
+        String iataArrival = pnr.getArrivalAirport().getIataCode();
+        Airport departireAirport;
+        Airport arrivalAirport;
 
-        if(( departureCity = departureCityRepository.findByIataCode(iataDeparture))==null){
+        if(( departireAirport = airportRepository.findByIataCode(iataDeparture))==null){
             throw new CityException("Город не найден, убедитесь в правильности ввода.");
         }
-        if(( arrivalCity = arrivalCityRepository.findByIataCode(iataArrival))==null){
+        if(( arrivalAirport = airportRepository.findByIataCode(iataArrival))==null){
             throw new CityException("Город не найден, убедитесь в правильности ввода.");
         }
 
-        pnr.setDepartureCity(departureCity);
-        pnr.setArrivalCity(arrivalCity);
+        pnr.setDepartureAirport(departireAirport);
+        pnr.setArrivalAirport(arrivalAirport);
         return pnr;
     }
 
@@ -140,8 +184,8 @@ public class PnrTicketService {
     private PnrDto entityToDto(PnrTicket pnr){
         PnrDto dto = new PnrDto();
         dto.setId(pnr.getId());
-        dto.setArrivalCity(pnr.getArrivalCity());
-        dto.setDepartureCity(pnr.getDepartureCity());
+        dto.setDepartureAirport(pnr.getDepartureAirport());
+        dto.setArrivalAirport(pnr.getArrivalAirport());
         dto.setArrivalTime(pnr.getArrivalTime());
         dto.setDepartureTime(pnr.getDepartureTime());
         dto.setTerminal(pnr.getTerminal());

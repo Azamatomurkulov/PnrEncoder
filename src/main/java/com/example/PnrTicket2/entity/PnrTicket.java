@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -21,9 +20,9 @@ public class PnrTicket {
     @OneToOne
     private DateOfDeparture dateOfDeparture;
     @OneToOne
-    private DepartureCity departureCity;
+    private Airport arrivalAirport;
     @OneToOne
-    private ArrivalCity arrivalCity;
+    private Airport departureAirport;
     private String terminal;
     private String departureTime;
     private String arrivalTime;

@@ -54,11 +54,11 @@ public class UserService {
         dto.setRole(user.getRole());
         return dto;
     }
-    public LocalDate deleteUserById(Long id){
+    public String deleteUserById(Long id){
         User user = userRepository.findById(id).get();
         user.setRdt(LocalDate.now());
         userRepository.save(user);
-        return user.getRdt();
+        return "Person with id: " +id+ " has been deleted.";
 
     }
     public UserSaveDto updateUserById(Long id,UserSaveDto dto){

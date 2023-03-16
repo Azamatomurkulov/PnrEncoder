@@ -2,7 +2,6 @@ package com.example.PnrTicket2.config;
 
 
 import com.example.PnrTicket2.enums.Permission;
-import com.example.PnrTicket2.enums.Roles;
 import com.example.PnrTicket2.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,12 +42,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http    .csrf().disable()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.GET,"/pnr","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*","/email/*").hasAuthority(Permission.ADMIN_READ.getPermission())
-                .antMatchers("/user/passwordupdate").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers(HttpMethod.GET,"/pnr","/user/*","/airport/*","/aviaCompany/*","/email/*").hasAuthority(Permission.ADMIN_READ.getPermission())
+                .antMatchers("/user/passwordUpdate").hasAuthority(Permission.ADMIN_READ.getPermission())
                 .antMatchers("/pnr/moder").hasAuthority(Permission.ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.POST,"/pnr/*","/user/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*","/arrivalcity/delete/*","/departurecity/delete/*","/aviacompany/delete/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
-                .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*","/user/update/*","/arrivalcity/*","/departurecity/*","/aviacompany/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
+                .antMatchers(HttpMethod.POST,"/pnr/*","/user/*","/airport/*","/aviaCompany/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*","/airport/delete/*","/aviaCompany/delete/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
+                .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*","/user/update/*","/airport/update/*","/airport/delete/*","/aviaCompany/delete/*","/aviaCompany/update/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
                 .anyRequest().authenticated()
 
                 .and().httpBasic();
