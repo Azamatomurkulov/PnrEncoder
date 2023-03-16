@@ -25,7 +25,7 @@ public class UserController {
     List<UserSaveDto> getAllUsers(){
         return userService.getAllUsers();
     }
-    @PostMapping("/newuser")
+    @PostMapping("/newUser")
     UserSaveDto addNewUser(@RequestBody UserSaveDto dto){
         return userService.addNewUser(dto);
     }
@@ -38,14 +38,14 @@ public class UserController {
                            @RequestBody UserSaveDto dto){
         return userService.updateUserById(id, dto);
     }
-    @PutMapping("/newpassword/{name}")
-    String newPassword(@PathVariable String name){
-        return userService.passwordUpdate(name);
+    @PutMapping("/newPassword/{login}")
+    String newPassword(@PathVariable String login){
+        return userService.passwordUpdate(login);
     }
-    @PutMapping("/passwordupdate")
-    String passwordUpdateForUser(@RequestParam String name,
-                                 @RequestParam String pw){
-        return userService.passwordUpdateForUser(name,pw);
+    @PutMapping("/passwordUpdate")
+    String passwordUpdateForUser(@RequestParam String login,
+                                 @RequestParam String password){
+        return userService.passwordUpdateForUser(login,password);
     }
 
 }

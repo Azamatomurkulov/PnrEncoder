@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/aviacompany")
+@RequestMapping("/aviaCompany")
 public class AviaCompanyController {
 
     AviaCompanyService aviaCompanyService;
@@ -23,7 +23,7 @@ public class AviaCompanyController {
     List<AviaCompanyDto> getAllAviaCompanies(){
         return aviaCompanyService.getAllAviaCompanies();
     }
-    @PostMapping("/addnewcompany")
+    @PostMapping("/addNewCompany")
     AviaCompanyDto addNewAviaCompany(@RequestBody AviaCompanyDto dto){
         return aviaCompanyService.addNewAviaCompany(dto);
     }

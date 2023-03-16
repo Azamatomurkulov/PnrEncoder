@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/departurecity")
+@RequestMapping("/departureCity")
 public class DepartureCityController {
     DepartureCityService departureCityService;
 
@@ -23,7 +23,7 @@ public class DepartureCityController {
     List<DepartureCityDto> getAllDepartureCities(){
         return departureCityService.getAllDepartureCities();
     }
-    @PostMapping("/addnewcity")
+    @PostMapping("/addNewCity")
     DepartureCityDto addNewDepartureCity(@RequestBody DepartureCityDto dto){
         return departureCityService.addNewDepartureCity(dto);
     }

@@ -33,6 +33,7 @@ public class UserService {
     public UserSaveDto addNewUser(UserSaveDto dto){
         User user = new User();
         user.setLogin(dto.getLogin());
+        user.setFullName(dto.getFullName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
