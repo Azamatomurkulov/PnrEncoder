@@ -31,7 +31,7 @@ public class PnrTicketService {
             aviaCompany.setIataCode(substring[0]);
             aviaCompany.setFlightNumber(substring[0]+substring[1]);
             n=1;
-        }else
+        } else
             aviaCompany.setFlightNumber(substring[0]);
             aviaCompany.setIataCode(substring[0].substring(0,2));
 
@@ -79,8 +79,8 @@ public class PnrTicketService {
         return pnrTicket2.getAviaCompany().getAirlineName()+" "+
                 pnrTicket2.getDateOfDeparture().getDate()+" "+
                 pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
-                pnrTicket2.getDepartureCity().getCity()+" "+
-                pnrTicket2.getArrivalCity().getCity()+" "+
+                pnrTicket2.getDepartureCity().getAirport()+" "+
+                pnrTicket2.getArrivalCity().getAirport()+" "+
                 pnrTicket2.getTerminal()+" " +
                 pnrTicket2.getDepartureTime()+" "+
                 pnrTicket2.getArrivalTime()+" "+
