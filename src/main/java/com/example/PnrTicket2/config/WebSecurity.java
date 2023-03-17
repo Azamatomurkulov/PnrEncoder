@@ -11,15 +11,19 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     UserDetailsServiceImpl userDetailsService;
+
+    JwtFilter jwtFilter;
 
     @Bean
     @Override
@@ -48,10 +52,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pnr/moder").hasAuthority(Permission.ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST,"/pnr/*","/user/*","/airport/*","/aviaCompany/*").hasAuthority(Permission.ADMIN_WRITE.getPermission())
                 .antMatchers(HttpMethod.DELETE,"/pnr/*","/user/*","/airport/delete/*","/aviaCompany/delete/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
+                .antMatchers("/authenticate").permitAll()
                 .antMatchers(HttpMethod.PUT,"/pnr/*","/user/delete/*","/user/update/*","/airport/update/*","/airport/delete/*","/aviaCompany/delete/*","/aviaCompany/update/*").hasAuthority(Permission.ADMIN_UPDATE.getPermission())
                 .anyRequest().authenticated()
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
                 .and().httpBasic();
+//        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 
