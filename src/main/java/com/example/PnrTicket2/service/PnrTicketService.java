@@ -57,7 +57,7 @@ public class PnrTicketService {
         pnrTicketRepository.deleteById(id);
         return "Pnr with id: "+id+" been deleted.";
     }
-    public String pnrEncode(String pnr) throws Exception {
+    public PnrDto pnrEncode(String pnr) throws Exception {
         String[] substring = pnr.trim().split("\\s+");
 
         AviaCompany aviaCompany = new AviaCompany();
@@ -117,18 +117,18 @@ public class PnrTicketService {
         pnrTicketRepository.save(pnrTicket2);
 
 
-//        PnrDto dto = entityToDto(pnrTicket2);
-//        return dto;
-
-        return pnrTicket2.getAviaCompany().getAirlineName()+" "+
-                pnrTicket2.getDateOfDeparture().getDate()+" "+
-                pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
-                pnrTicket2.getDepartureAirport().getAirport()+" "+
-                pnrTicket2.getArrivalAirport().getAirport()+" "+
-                pnrTicket2.getTerminal()+" " +
-                pnrTicket2.getDepartureTime()+" "+
-                pnrTicket2.getArrivalTime()+" "+
-                pnrTicket2.getAviaCompany().getFlightNumber();
+        PnrDto dto = entityToDto(pnrTicket2);
+        return dto;
+//
+//        return pnrTicket2.getAviaCompany().getAirlineName()+" "+
+//                pnrTicket2.getDateOfDeparture().getDate()+" "+
+//                pnrTicket2.getDateOfDeparture().getDateEncode() + " "+
+//                pnrTicket2.getDepartureAirport().getAirport()+" "+
+//                pnrTicket2.getArrivalAirport().getAirport()+" "+
+//                pnrTicket2.getTerminal()+" " +
+//                pnrTicket2.getDepartureTime()+" "+
+//                pnrTicket2.getArrivalTime()+" "+
+//                pnrTicket2.getAviaCompany().getFlightNumber();
     }
 
     public PnrTicket pnrDateEncoder(PnrTicket pnr){
@@ -171,11 +171,11 @@ public class PnrTicketService {
         return pnr;
     }
 
-    public List<String> pnrEncoderForModer(String pnr) throws Exception {
+    public List<PnrDto> pnrEncoderForModer(String pnr) throws Exception {
         String[] pnrString = pnr.split("/");
-        List<String> list = new ArrayList<>();
+        List<PnrDto> list = new ArrayList<>();
         for(int i =0;i< pnrString.length;i++){
-            String str  = pnrEncode(pnrString[i]);
+            PnrDto str  = pnrEncode(pnrString[i]);
             list.add(str);
         }return list;
 

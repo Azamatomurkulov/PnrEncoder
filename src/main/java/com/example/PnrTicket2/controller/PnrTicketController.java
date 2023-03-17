@@ -13,10 +13,10 @@ import java.util.List;
 @RequestMapping("/pnr")
 public class PnrTicketController {
     PnrTicketService pnrTicketService;
-    @GetMapping("/{id}")
-    PnrDto getPnrById(@PathVariable Long id){
-        return pnrTicketService.getPnrById(id);
-    }
+//    @GetMapping("/{id}")
+//    PnrDto getPnrById(@PathVariable Long id){
+//        return pnrTicketService.getPnrById(id);
+//    }
 
     @GetMapping("/all")
     List<PnrDto> getAllPnrTickets(){
@@ -34,12 +34,12 @@ public class PnrTicketController {
     }
 
     @GetMapping("/{pnr}")
-    String pnrEncode(@PathVariable String pnr) throws Exception{
+    PnrDto pnrEncode(@PathVariable String pnr) throws Exception{
         return pnrTicketService.pnrEncode(pnr);
     }
 
     @GetMapping("/moder")
-    List<String> pnrEncoderModer(@RequestParam String pnr) throws Exception {
+    List<PnrDto> pnrEncoderModer(@RequestParam String pnr) throws Exception {
         return pnrTicketService.pnrEncoderForModer(pnr);
     }
 }
