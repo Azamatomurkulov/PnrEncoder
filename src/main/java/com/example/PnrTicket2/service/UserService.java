@@ -20,7 +20,7 @@ public class UserService {
 
 
     public UserSaveDto getUserById(Long id) throws Exception {
-        User user = userRepository.findByIdAndRdtIsNull(id).orElseThrow(() -> new Exception("User not Found"));
+        User user = userRepository.findByIdAndRdtIsNull(id);
         return userToDto(user);
     }
     public List<UserSaveDto> getAllUsers(){

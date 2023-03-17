@@ -6,8 +6,6 @@ import com.example.PnrTicket2.entity.DateOfDeparture;
 import com.example.PnrTicket2.entity.DepartureCity;
 import lombok.Data;
 
-import javax.persistence.OneToOne;
-
 @Data
 public class PnrDto {
     private Long id;
