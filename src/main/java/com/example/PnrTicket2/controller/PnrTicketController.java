@@ -3,7 +3,6 @@ package com.example.PnrTicket2.controller;
 import com.example.PnrTicket2.dto.PnrDto;
 import com.example.PnrTicket2.service.PnrTicketService;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,12 +33,12 @@ public class PnrTicketController {
     }
 
     @GetMapping("/{pnr}")
-    PnrDto pnrEncode(@PathVariable String pnr) throws Exception{
+    String pnrEncode(@PathVariable String pnr) throws Exception{
         return pnrTicketService.pnrEncode(pnr);
     }
 
     @GetMapping("/moder")
-    List<PnrDto> pnrEncoderModer(@RequestParam String pnr) throws Exception {
+    List<String> pnrEncoderModer(@RequestParam String pnr) throws Exception {
         return pnrTicketService.pnrEncoderForModer(pnr);
     }
 }
