@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    @Query(value = "select * from users_table where login = ?", nativeQuery = true)
+    @Query(value = "select * from users_table where login = :name", nativeQuery = true)
     User findByLogin(String name);
 
     User findByIdAndRdtIsNull(Long id);
