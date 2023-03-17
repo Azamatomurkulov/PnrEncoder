@@ -13,10 +13,10 @@ import java.util.List;
 @RequestMapping("/pnr")
 public class PnrTicketController {
     PnrTicketService pnrTicketService;
-//    @GetMapping("/{id}")
-//    PnrDto getPnrById(@PathVariable Long id){
-//        return pnrTicketService.getPnrById(id);
-//    }
+    @GetMapping("/ticket/{id}")
+    PnrDto getPnrById(@PathVariable Long id){
+        return pnrTicketService.getPnrById(id);
+    }
 
     @GetMapping("/all")
     List<PnrDto> getAllPnrTickets(){

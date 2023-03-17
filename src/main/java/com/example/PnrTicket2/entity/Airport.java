@@ -17,9 +17,9 @@ public class Airport {
     private Long id;
     @Column(nullable = false,unique = true)
     private String iataCode;
-    @Column(length = 30)
+
     private String airport;
-    @Column(length = 30)
+
     private String country;
     private LocalDate rdt;
 }
