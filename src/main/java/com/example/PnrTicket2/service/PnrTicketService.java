@@ -9,10 +9,9 @@ import com.example.PnrTicket2.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -116,10 +115,10 @@ public class PnrTicketService {
 
         pnrTicketRepository.save(pnrTicket2);
 
-
+//
 //        PnrDto dto = entityToDto(pnrTicket2);
 //        return dto;
-
+//
         return pnrTicket2.getAviaCompany().getAirlineName()+" "+
                 pnrTicket2.getDateOfDeparture().getDate()+" "+
                 pnrTicket2.getDateOfDeparture().getDateEncode() + " "+

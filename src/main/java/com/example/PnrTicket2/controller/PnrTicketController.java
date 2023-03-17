@@ -3,7 +3,6 @@ package com.example.PnrTicket2.controller;
 import com.example.PnrTicket2.dto.PnrDto;
 import com.example.PnrTicket2.service.PnrTicketService;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @RequestMapping("/pnr")
 public class PnrTicketController {
     PnrTicketService pnrTicketService;
-    @GetMapping("/{id}")
+    @GetMapping("/ticket/{id}")
     PnrDto getPnrById(@PathVariable Long id){
         return pnrTicketService.getPnrById(id);
     }
