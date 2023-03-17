@@ -1,15 +1,15 @@
 create sequence hibernate_sequence start 1 increment 1;
 create table airport (
                             id int8 not null,
-                            airport varchar(30),
-                            country varchar(30),
+                            airport varchar(255),
+                            country varchar(255),
                             iata_code varchar() UNIQUE,
                             rdt LocalDate,
                             primary key (id));
 create table avia_company (
                             id int8 not null,
-                            airline_name varchar(30),
-                            flight_number varchar(30),
+                            airline_name varchar(255),
+                            flight_number varchar(255),
                             iata_code varchar(255) UNIQUE,
                             rdt LocalDate,
                             primary key (id));
