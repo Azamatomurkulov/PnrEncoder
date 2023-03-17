@@ -1,0 +1,2 @@
+--INSERT INTO users_table VALUES ('id', 'email', 'full_name', 'login', 'password', 'rdt', 'role')
+--    (1,'azam',)
